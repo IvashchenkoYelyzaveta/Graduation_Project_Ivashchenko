@@ -15,6 +15,7 @@ import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import pages.HomePage;
 import pages.LoginPage;
+
 import java.time.Duration;
 
 
@@ -61,25 +62,10 @@ public class MyTests {
     @Test
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
-    public void testContactsLink() {
-        try {
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
-            JavascriptExecutor js = (JavascriptExecutor) driver;
-            // Ожидание загрузки страницы
-            wait.until(driver -> js.executeScript("return document.readyState").equals("complete"));
-            // Ожидание завершения всех асинхронных запросов
-            wait.until(driver -> (Boolean) js.executeScript("return jQuery.active == 0"));
-
-
-            WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
-            System.out.println("Element found: " + (element != null));
-            wait.until(ExpectedConditions.elementToBeClickable(element));
-            System.out.println("Element is clickable.");
-            assert element != null;
-            element.click();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    public void testContactsLink() throws InterruptedException {
+        WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
+        Thread.sleep(10000);
+        element.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
 
 

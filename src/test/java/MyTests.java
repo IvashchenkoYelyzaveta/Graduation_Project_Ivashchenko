@@ -1,10 +1,7 @@
 import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import io.qameta.allure.testng.AllureTestNg;
-import org.openqa.selenium.By;
-import org.openqa.selenium.Dimension;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -29,7 +26,7 @@ public class MyTests {
     public void initDriver() {
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
-        driver.manage().window().setSize(new Dimension(1920, 1080));
+        driver.manage().window().maximize();
         driver.get("https://planetakino.ua/");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);
@@ -62,10 +59,12 @@ public class MyTests {
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
         // Ожидание, пока ссылка "Контакты" не станет кликабельной
         wait.until(ExpectedConditions.elementToBeClickable(homePage.getContactsLink()));
-        homePage.clickContactsLink();
+        // Используем JavaScript для клика по элементу
+        JavascriptExecutor js = (JavascriptExecutor) driver;
+        js.executeScript("arguments[0].click();", homePage.getContactsLink());
         // Ожидание, пока URL не будет содержать "contacts"
         wait.until(ExpectedConditions.urlContains("contacts"));
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));

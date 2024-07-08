@@ -11,17 +11,14 @@ public class HomePage {
 
     WebDriver driver;
 
-    // Конструктор класса HomePage, принимает WebDriver
     public HomePage(WebDriver driver) {
         this.driver = driver;
     }
 
-    // Получение заголовка главной страницы
     public String getHomePageTitle() {
         return driver.getTitle();
     }
 
-    // Проверка, отображается ли логотип
     public boolean isLogoDisplayed() {
         WebElement logo = driver.findElement(By.cssSelector("#logo"));
         return logo.isDisplayed();
@@ -29,17 +26,15 @@ public class HomePage {
 
     // Клик по ссылке "Контакти"
     public void clickContactsLink() {
-        WebElement contactsLink = driver.findElement(By.linkText("Контакти"));
+        WebElement contactsLink = driver.findElement(By.xpath("//a[@href='/contacts/']"));
         contactsLink.click();
     }
 
-    // Клик по ссылке "Фільми"
     public void clickMoviesLink() {
-        WebElement movies = driver.findElement(By.linkText("Фільми"));
+        WebElement movies = driver.findElement(By.xpath("//a[@href='/lvov/movies/']"));
         movies.click();
     }
 
-    // Клик по форме поиска
     public void clickSearchForm() {
         WebElement searchForm = driver.findElement(By.cssSelector(".move-to-active"));
         searchForm.click();
@@ -55,7 +50,6 @@ public class HomePage {
         js.executeScript("arguments[0].dispatchEvent(new Event('input'));", searchField);
     }
 
-    // Проверка, отображаются ли результаты поиска
     public boolean isSearchResultDisplayed() {
         WebElement searchResult = driver.findElement(By.cssSelector(".list-search-movie"));
         return searchResult.isDisplayed();

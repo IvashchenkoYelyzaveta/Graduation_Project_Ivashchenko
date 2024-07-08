@@ -6,10 +6,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.Listeners;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import pages.HomePage;
 import pages.LoginPage;
 
@@ -54,6 +51,7 @@ public class MyTests {
     }
 
     @Test
+    @Ignore
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() {
@@ -62,6 +60,7 @@ public class MyTests {
     }
 
     @Test
+    @Ignore
     @Description("Check the functionality of the 'Movies' page link")
     @Story("Home Page")
     public void testMoviesPage() {

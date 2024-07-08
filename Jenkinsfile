@@ -6,6 +6,15 @@ pipeline {
     }
 
     stages {
+        stage('Clean Reports') {
+            steps {
+                echo 'Cleaning old reports...'
+                bat 'del /Q target\\surefire-reports\\*' // Удаление старых отчетов в Windows
+                bat 'del /Q target\\allure-results\\*' // Удаление старых Allure отчетов в Windows
+            }
+        }
+
+    stages {
         stage('Build') {
             steps {
                 echo 'Building...'

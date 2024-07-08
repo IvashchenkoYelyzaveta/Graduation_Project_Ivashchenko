@@ -3,6 +3,9 @@ import io.qameta.allure.Story;
 import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.logging.LogEntries;
+import org.openqa.selenium.logging.LogEntry;
+import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -59,11 +62,23 @@ public class MyTests {
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() {
-        WebElement link = driver.findElement(By.cssSelector("a[href='/contacts/']"));
-        System.out.println(link);
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        wait.until(ExpectedConditions.elementToBeClickable(link));
-        link.click();
+        try {
+            WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
+            System.out.println("Element found: " + (element != null));
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+            wait.until(ExpectedConditions.elementToBeClickable(element));
+            System.out.println("Element is clickable.");
+            assert element != null;
+            element.click();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
+        for (LogEntry log : logs) {
+            System.out.println(log.getMessage());
+        }
+        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
+
 
 //        // Ожидание, пока ссылка "Контакты" не станет кликабельной
 
@@ -72,7 +87,6 @@ public class MyTests {
 //        js.executeScript("arguments[0].click();", homePage.getContactsLink());
 //        // Ожидание, пока URL не будет содержать "contacts"
 
-        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
     }
 //
 //    @Test

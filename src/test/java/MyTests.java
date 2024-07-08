@@ -58,13 +58,18 @@ public class MyTests {
         Assert.assertTrue(homePage.isLogoDisplayed());
     }
 
-//    @Test
-//    @Description("Check the functionality of the 'Contacts' page link")
-//    @Story("Home Page")
-//    public void testContactsLink() {
-//        homePage.clickContactsLink();
-//        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
-//    }
+    @Test
+    @Description("Check the functionality of the 'Contacts' page link")
+    @Story("Home Page")
+    public void testContactsLink() {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        // Ожидание, пока ссылка "Контакты" не станет кликабельной
+        wait.until(ExpectedConditions.elementToBeClickable(homePage.getContactsLink()));
+        homePage.clickContactsLink();
+        // Ожидание, пока URL не будет содержать "contacts"
+        wait.until(ExpectedConditions.urlContains("contacts"));
+        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
+    }
 //
 //    @Test
 //    @Description("Check the functionality of the 'Movies' page link")

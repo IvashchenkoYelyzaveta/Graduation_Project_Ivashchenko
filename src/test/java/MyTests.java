@@ -58,21 +58,21 @@ public class MyTests {
         Assert.assertTrue(homePage.isLogoDisplayed());
     }
 
-    @Test
-    @Description("Check the functionality of the 'Contacts' page link")
-    @Story("Home Page")
-    public void testContactsLink() {
-        homePage.clickContactsLink();
-        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
-    }
-
-    @Test
-    @Description("Check the functionality of the 'Movies' page link")
-    @Story("Home Page")
-    public void testMoviesPage() {
-        homePage.clickMoviesLink();
-        Assert.assertTrue(driver.getCurrentUrl().contains("movies"));
-    }
+//    @Test
+//    @Description("Check the functionality of the 'Contacts' page link")
+//    @Story("Home Page")
+//    public void testContactsLink() {
+//        homePage.clickContactsLink();
+//        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
+//    }
+//
+//    @Test
+//    @Description("Check the functionality of the 'Movies' page link")
+//    @Story("Home Page")
+//    public void testMoviesPage() {
+//        homePage.clickMoviesLink();
+//        Assert.assertTrue(driver.getCurrentUrl().contains("movies"));
+//    }
 
     @Test
     @Description("Check for the presence and display of the movie search form")

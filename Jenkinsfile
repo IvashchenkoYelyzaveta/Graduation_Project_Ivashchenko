@@ -2,13 +2,15 @@ pipeline {
     agent any
 
     triggers {
-        cron('H 0 * * *')
+        cron('H 0 * * *') // Запускать каждый день в полночь
     }
 
     stages {
         stage('Build') {
             steps {
                 echo 'Building...'
+                bat 'echo %PATH%'
+                bat 'mvn -version'
                 bat 'mvn clean install'
             }
         }
@@ -28,7 +30,7 @@ pipeline {
                     jdk: '',
                     properties: [],
                     reportBuildPolicy: 'ALWAYS',
-                    results: [[path: 'target/allure-results']]
+                    results: [[path: 'target/allure-results']] // Путь к результатам Allure
                 ])
             }
         }
@@ -36,10 +38,10 @@ pipeline {
 
     post {
         success {
-            echo 'Pipeline completed successfully!'
+            echo 'Pipeline completed successfully!' // Сообщение при успешном завершении
         }
         failure {
-            echo 'Pipeline failed.'
+            echo 'Pipeline failed.' // Сообщение при сбое
         }
     }
 }

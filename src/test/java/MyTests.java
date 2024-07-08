@@ -61,10 +61,12 @@ public class MyTests {
     public void testContactsLink() {
         WebElement link = driver.findElement(By.cssSelector("a[href='/contacts/']"));
         System.out.println(link);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(link));
         link.click();
-//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+
 //        // Ожидание, пока ссылка "Контакты" не станет кликабельной
-//        wait.until(ExpectedConditions.elementToBeClickable(homePage.getContactsLink()));
+
 //        // Используем JavaScript для клика по элементу
 //        JavascriptExecutor js = (JavascriptExecutor) driver;
 //        js.executeScript("arguments[0].click();", homePage.getContactsLink());

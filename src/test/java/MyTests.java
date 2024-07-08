@@ -2,6 +2,7 @@ import io.qameta.allure.Description;
 import io.qameta.allure.Story;
 import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
@@ -27,8 +28,8 @@ public class MyTests {
     @BeforeMethod
     public void initDriver() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
-        driver.manage().window().maximize();
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.manage().window().setSize(new Dimension(1920, 1080));
         driver.get("https://planetakino.ua/");
         homePage = new HomePage(driver);
         loginPage = new LoginPage(driver);

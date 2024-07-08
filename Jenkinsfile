@@ -9,16 +9,14 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building...'
-                bat 'echo %PATH%'
-                bat 'mvn -version'
-                bat 'mvn clean install'
+                bat '"C:\\Program Files\\apache-maven-3.9.7\\bin\\mvn" clean install'
             }
         }
 
         stage('Test') {
             steps {
                 echo 'Testing...'
-                bat 'mvn test'
+                bat '"C:\\Program Files\\apache-maven-3.9.7\\bin\\mvn" test'
             }
         }
 

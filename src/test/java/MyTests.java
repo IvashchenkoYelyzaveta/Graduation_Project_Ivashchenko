@@ -28,7 +28,7 @@ public class MyTests {
     @BeforeMethod
     public void initDriver() {
         driver = new ChromeDriver();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.manage().window().maximize();
         driver.get("https://planetakino.ua/");
         homePage = new HomePage(driver);
@@ -63,19 +63,22 @@ public class MyTests {
     @Story("Home Page")
     public void testContactsLink() {
         try {
+            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(120));
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+            // Ожидание загрузки страницы
+            wait.until(driver -> js.executeScript("return document.readyState").equals("complete"));
+            // Ожидание завершения всех асинхронных запросов
+            wait.until(driver -> (Boolean) js.executeScript("return jQuery.active == 0"));
+
+
             WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
             System.out.println("Element found: " + (element != null));
-            WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
             wait.until(ExpectedConditions.elementToBeClickable(element));
             System.out.println("Element is clickable.");
             assert element != null;
             element.click();
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        LogEntries logs = driver.manage().logs().get(LogType.BROWSER);
-        for (LogEntry log : logs) {
-            System.out.println(log.getMessage());
         }
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
 

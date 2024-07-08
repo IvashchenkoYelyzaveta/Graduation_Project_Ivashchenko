@@ -29,7 +29,7 @@ public class MyTests {
     @BeforeMethod
     public void initDriver() {
         driver = new ChromeDriver();
-//        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
+        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(20));
         driver.manage().window().maximize();
         driver.get("https://planetakino.ua/");
         homePage = new HomePage(driver);
@@ -63,9 +63,10 @@ public class MyTests {
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() throws InterruptedException {
-        WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
-        Thread.sleep(10000);
-        element.click();
+        homePage.clickContactsLink();
+//        WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
+//        Thread.sleep(10000);
+//        element.click();
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
 
 

@@ -1,10 +1,11 @@
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
-<suite name="graduation" parallel="classes" thread-count="1">
-
-    <test name="myTests">
+<suite name="MySuite">
+    <listeners>
+        <listener class-name="io.qameta.allure.testng.AllureTestNg"/>
+    </listeners>
+    <test name="AllTest">
         <classes>
-<!--            <class name=""/>-->
+            <class name="MyTests"/>
         </classes>
     </test>
-
 </suite>

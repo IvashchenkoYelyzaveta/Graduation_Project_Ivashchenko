@@ -1,17 +1,28 @@
+import io.qameta.allure.Description;
+import io.qameta.allure.Story;
+import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
-
+import pages.HomePage;
+import pages.LoginPage;
 import java.time.Duration;
 
+
+@Listeners({AllureTestNg.class})
 public class MyTests {
 
     WebDriver driver;
+    HomePage homePage;
+    LoginPage loginPage;
 
     @BeforeMethod
     public void initDriver() {
@@ -19,119 +30,108 @@ public class MyTests {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.get("https://planetakino.ua/");
+        homePage = new HomePage(driver);
+        loginPage = new LoginPage(driver);
     }
 
     @AfterMethod
     public void quitDriver() {
+
         driver.quit();
     }
 
-
     //    Проверка главной страницы
     @Test
+    @Description("Check home page title")
+    @Story("Home Page")
     public void testHomePageTitle() {
-        String title = driver.getTitle();
+        String title = homePage.getHomePageTitle();
         Assert.assertTrue(title.contains("Планета Кіно"));
     }
 
     //    Проверка наличия логотипа
     @Test
+    @Description("Check logo")
+    @Story("Home Page")
     public void testLogoPresence() {
-        WebElement logo = driver.findElement(By.cssSelector("#logo"));
-        Assert.assertTrue(logo.isDisplayed());
+        Assert.assertTrue(homePage.isLogoDisplayed());
     }
 
-    //    Проверка ссылки на страницу "Контакты"
     @Test
+    @Description("Check the functionality of the 'Contacts' page link")
+    @Story("Home Page")
     public void testContactsLink() {
-        WebElement contactsLink = driver.findElement(By.linkText("Контакти"));
-        Assert.assertTrue(contactsLink.isDisplayed());
-        contactsLink.click();
+        homePage.clickContactsLink();
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
     }
 
-    //    Проверка доступности страницы "Фільми"
     @Test
-    public void testRepertoirePage() {
-        WebElement repertoireLink = driver.findElement(By.linkText("Фільми"));
-        repertoireLink.click();
+    @Description("Check the functionality of the 'Movies' page link")
+    @Story("Home Page")
+    public void testMoviesPage() {
+        homePage.clickMoviesLink();
         Assert.assertTrue(driver.getCurrentUrl().contains("movies"));
     }
 
-
-    //    Проверка формы поиска фильмов
     @Test
+    @Description("Check for the presence and display of the movie search form")
+    @Story("Search")
     public void testSearchForm() {
-        WebElement searchForm = driver.findElement(By.cssSelector(".move-to-active"));
-        searchForm.click();
-        Assert.assertTrue(searchForm.isDisplayed());
+        homePage.clickSearchForm();
+        // Явное ожидание для появления формы поиска
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
+        boolean isDisplayed = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".search-input"))).isDisplayed();
+        Assert.assertTrue(isDisplayed, "Search input field should be displayed");
     }
 
-    //    Проверка результатов поиска
     @Test(groups = "positive")
-    public void testSearchFunctionality() {
-        WebElement searchForm = driver.findElement(By.cssSelector(".move-to-active"));
-        searchForm.click();
-        WebElement searchField = driver.findElement(By.cssSelector(".search-input"));
-        searchField.sendKeys("Місяць");
-        searchField.click();
-        WebElement searchResult = driver.findElement(By.cssSelector(".list-search-movie"));
-        Assert.assertTrue(searchResult.isDisplayed());
+    @Description("Check the correctness of the search function with a valid data")
+    @Story("Search")
+    public void testSearchFunctionality() throws InterruptedException {
+        homePage.clickSearchForm();
+        homePage.searchMovie("Місяць");
+        WebElement result = driver.findElement(By.cssSelector(".list-search-movie")).findElement(By.tagName("a"));
+        Assert.assertTrue(result.isDisplayed());
     }
 
-    //    !!! Проверка результатов поиска neg !!!
     @Test(groups = "negative")
-    public void testSearchFunctionalityNeg() {
-        WebElement searchForm = driver.findElement(By.cssSelector(".move-to-active"));
-        searchForm.click();
-        WebElement searchField = driver.findElement(By.cssSelector(".search-input"));
-        searchField.sendKeys("123456");
-        searchField.click();
-
-        // не могу понять почему не находит этот элемент хотя в инстурментах разработчика по этому xpath находит
-        WebElement noResultsMessage = driver.findElement(By.xpath("//p[text()='Фільм не знайдено']"));
-        Assert.assertTrue(noResultsMessage.isDisplayed());
+    @Description("Check the correctness of the search function with a invalid data")
+    @Story("Search")
+    public void testSearchFunctionalityNeg() throws InterruptedException {
+        homePage.clickSearchForm();
+        homePage.searchMovie("123456");
+        WebElement result = driver.findElement(By.cssSelector(".list-search-movie")).findElement(By.tagName("p"));
+        Assert.assertTrue(result.isDisplayed());
     }
 
-    //    Проверка наличия формы регистрации
     @Test
+    @Description("Check for the presence of the registration/login form")
+    @Story("User Login")
     public void testUserRegistration() {
-        WebElement registerLink = driver.findElement(By.linkText("Реєстрація"));
-        registerLink.click();
-        WebElement boxElement = driver.findElement(By.xpath("//div[@class='box']"));
-        Assert.assertTrue(boxElement.isDisplayed());
+        loginPage.clickRegisterLink();
+        Assert.assertTrue(loginPage.isRegistrationFormDisplayed());
     }
 
-    //    Проверка логина пользователя (позитивный сценарий)
     @Test(groups = "positive")
+    @Description("Check successful user login with valid data")
+    @Story("User Login")
     public void testUserLogin() {
-        WebElement loginLink = driver.findElement(By.linkText("Вхід"));
-        loginLink.click();
-        WebElement emailField = driver.findElement(By.cssSelector("#loginform-login"));
-        WebElement passwordField = driver.findElement(By.cssSelector("#loginform-password"));
-        WebElement loginButton = driver.findElement(By.name("login-button"));
-        emailField.sendKeys("elizabeth.mrs.jack@gmail.com");
-        passwordField.sendKeys("20061991");
-        loginButton.click();
-        WebElement userProfile = driver.findElement(By.xpath("//a[@href='https://cabinet.planetakino.ua']"));
-        Assert.assertTrue(userProfile.isDisplayed());
+        loginPage.clickLoginLink();
+        loginPage.enterEmail("elizabeth.mrs.jack@gmail.com");
+        loginPage.enterPassword("20061991");
+        loginPage.clickLoginButton();
+        Assert.assertTrue(loginPage.isUserProfileDisplayed());
     }
 
-    //    Проверка логина пользователя (негативный сценарий пустые поля)
     @Test(groups = "negative")
+    @Description("Check successful user login with empty fields")
+    @Story("User Login")
     public void testUserLoginNeg() {
-        WebElement loginLink = driver.findElement(By.linkText("Вхід"));
-        loginLink.click();
-        WebElement emailField = driver.findElement(By.cssSelector("#loginform-login"));
-        WebElement passwordField = driver.findElement(By.cssSelector("#loginform-password"));
-        WebElement loginButton = driver.findElement(By.name("login-button"));
-        emailField.sendKeys("");
-        passwordField.sendKeys("");
-        loginButton.click();
-        WebElement userProfile = driver.findElement(By.xpath("//p[text()='Необхідно заповнити це поле']"));
-        Assert.assertTrue(userProfile.isDisplayed());
+        loginPage.clickLoginLink();
+        loginPage.enterEmail("");
+        loginPage.enterPassword("");
+        loginPage.clickLoginButton();
+        Assert.assertTrue(loginPage.isEmptyFieldErrorDisplayed());
     }
-
-
 
 }

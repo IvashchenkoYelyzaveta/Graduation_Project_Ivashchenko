@@ -70,6 +70,16 @@ public class MyTests {
 //    }
 
     @Test
+    public void testCartPresence() {
+        Assert.assertTrue(homePage.isCartDisplayed());
+    }
+
+    @Test
+    public void testCityPresence() {
+        Assert.assertTrue(homePage.isCityDisplayed());
+    }
+
+    @Test
     @Description("Check for the presence and display of the movie search form")
     @Story("Search")
     public void testSearchForm() {

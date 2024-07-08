@@ -12,6 +12,20 @@ public class HomePage {
 
     WebDriver driver;
 
+    @FindBy(css = ".cart__icon")
+    private WebElement cart;
+
+    public boolean isCartDisplayed() {
+        return cart.isDisplayed();
+    }
+
+    @FindBy(css = ".city-selector")
+    private WebElement city;
+
+    public boolean isCityDisplayed() {
+        return cart.isDisplayed();
+    }
+
     @FindBy(css = "#logo")
     private WebElement logo;
 

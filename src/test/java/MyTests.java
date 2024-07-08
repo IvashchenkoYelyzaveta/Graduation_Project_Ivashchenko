@@ -59,7 +59,8 @@ public class MyTests {
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() {
-        WebElement link = driver.findElement(By.linkText("Контакти"));
+        WebElement link = driver.findElement(By.cssSelector("a[href='/contacts/']"));
+        System.out.println(link);
         link.click();
 //        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
 //        // Ожидание, пока ссылка "Контакты" не станет кликабельной

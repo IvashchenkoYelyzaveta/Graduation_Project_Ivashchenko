@@ -59,14 +59,16 @@ public class MyTests {
     @Description("Check the functionality of the 'Contacts' page link")
     @Story("Home Page")
     public void testContactsLink() {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-        // Ожидание, пока ссылка "Контакты" не станет кликабельной
-        wait.until(ExpectedConditions.elementToBeClickable(homePage.getContactsLink()));
-        // Используем JavaScript для клика по элементу
-        JavascriptExecutor js = (JavascriptExecutor) driver;
-        js.executeScript("arguments[0].click();", homePage.getContactsLink());
-        // Ожидание, пока URL не будет содержать "contacts"
-        wait.until(ExpectedConditions.urlContains("contacts"));
+        WebElement link = driver.findElement(By.linkText("Контакти"));
+        link.click();
+//        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(20));
+//        // Ожидание, пока ссылка "Контакты" не станет кликабельной
+//        wait.until(ExpectedConditions.elementToBeClickable(homePage.getContactsLink()));
+//        // Используем JavaScript для клика по элементу
+//        JavascriptExecutor js = (JavascriptExecutor) driver;
+//        js.executeScript("arguments[0].click();", homePage.getContactsLink());
+//        // Ожидание, пока URL не будет содержать "contacts"
+
         Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
     }
 //

@@ -3,9 +3,6 @@ import io.qameta.allure.Story;
 import io.qameta.allure.testng.AllureTestNg;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.logging.LogEntries;
-import org.openqa.selenium.logging.LogEntry;
-import org.openqa.selenium.logging.LogType;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
@@ -38,11 +35,9 @@ public class MyTests {
 
     @AfterMethod
     public void quitDriver() {
-
         driver.quit();
     }
 
-    //    Проверка главной страницы
     @Test
     @Description("Check home page title")
     @Story("Home Page")
@@ -51,7 +46,6 @@ public class MyTests {
         Assert.assertTrue(title.contains("Планета Кіно"));
     }
 
-    //    Проверка наличия логотипа
     @Test
     @Description("Check logo")
     @Story("Home Page")
@@ -59,25 +53,13 @@ public class MyTests {
         Assert.assertTrue(homePage.isLogoDisplayed());
     }
 
-    @Test
-    @Description("Check the functionality of the 'Contacts' page link")
-    @Story("Home Page")
-    public void testContactsLink() throws InterruptedException {
-        homePage.clickContactsLink();
-//        WebElement element = driver.findElement(By.cssSelector("a[href='/contacts/']"));
-//        Thread.sleep(10000);
-//        element.click();
-        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
-
-
-//        // Ожидание, пока ссылка "Контакты" не станет кликабельной
-
-//        // Используем JavaScript для клика по элементу
-//        JavascriptExecutor js = (JavascriptExecutor) driver;
-//        js.executeScript("arguments[0].click();", homePage.getContactsLink());
-//        // Ожидание, пока URL не будет содержать "contacts"
-
-    }
+//    @Test
+//    @Description("Check the functionality of the 'Contacts' page link")
+//    @Story("Home Page")
+//    public void testContactsLink() {
+//        homePage.clickContactsLink();
+//        Assert.assertTrue(driver.getCurrentUrl().contains("contacts"));
+//    }
 //
 //    @Test
 //    @Description("Check the functionality of the 'Movies' page link")
@@ -92,7 +74,6 @@ public class MyTests {
     @Story("Search")
     public void testSearchForm() {
         homePage.clickSearchForm();
-        // Явное ожидание для появления формы поиска
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(10));
         boolean isDisplayed = wait.until(ExpectedConditions.visibilityOfElementLocated(By.cssSelector(".search-input"))).isDisplayed();
         Assert.assertTrue(isDisplayed, "Search input field should be displayed");

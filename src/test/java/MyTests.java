@@ -70,11 +70,13 @@ public class MyTests {
 //    }
 
     @Test
+    @Story("Home Page")
     public void testCartPresence() {
         Assert.assertTrue(homePage.isCartDisplayed());
     }
 
     @Test
+    @Story("Home Page")
     public void testCityPresence() {
         Assert.assertTrue(homePage.isCityDisplayed());
     }
